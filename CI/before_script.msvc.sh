@@ -627,7 +627,7 @@ else
 	printf "Boost ${BOOST_VER} AppVeyor... "
 fi
 {
-	if [ -z $APPVEYOR ]; then
+	if true; then
 		cd $DEPS_INSTALL
 
 		BOOST_SDK="$(real_pwd)/Boost"
