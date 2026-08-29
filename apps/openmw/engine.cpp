@@ -53,6 +53,7 @@
 #include <components/misc/frameratelimiter.hpp>
 
 #include "mwinput/inputmanagerimp.hpp"
+#include "mwext/pluginmanager.hpp"
 
 #include "mwgui/windowmanagerimp.hpp"
 
@@ -329,6 +330,9 @@ bool OMW::Engine::frame(float frametime)
             End of tes3mp addition
         */
 
+        if (mClientPlugins)
+            mClientPlugins->onFrame(frametime);
+
         // Main menu opened? Then scripts are also paused.
         bool paused = mEnvironment.getWindowManager()->containsMode(MWGui::GM_MainMenu);
         
@@ -496,6 +500,9 @@ OMW::Engine::Engine(Files::ConfigurationManager& configurationManager)
 
 OMW::Engine::~Engine()
 {
+    // Unload native client addons while OpenMW subsystems still exist.
+    mClientPlugins.reset();
+
     /*
         Start of tes3mp addition
 
@@ -1041,6 +1048,10 @@ void OMW::Engine::go()
     /*
         End of tes3mp addition
     */
+
+    // MWExt native addons live beside tes3mp.exe in clientplugins/.
+    mClientPlugins.reset(new MWExt::PluginManager(mCfgMgr.getLocalPath() / "clientplugins"));
+    mClientPlugins->loadAll();
 
     /*
         Start of tes3mp change (major)

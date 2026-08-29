@@ -1,6 +1,8 @@
 #ifndef ENGINE_H
 #define ENGINE_H
 
+#include <memory>
+
 #include <components/compiler/extensions.hpp>
 #include <components/files/collections.hpp>
 #include <components/translation/translation.hpp>
@@ -21,6 +23,11 @@ namespace Resource
 namespace SceneUtil
 {
     class WorkQueue;
+}
+
+namespace MWExt
+{
+    class PluginManager;
 }
 
 namespace VFS
@@ -54,6 +61,7 @@ namespace OMW
             std::unique_ptr<VFS::Manager> mVFS;
             std::unique_ptr<Resource::ResourceSystem> mResourceSystem;
             osg::ref_ptr<SceneUtil::WorkQueue> mWorkQueue;
+            std::unique_ptr<MWExt::PluginManager> mClientPlugins;
             MWBase::Environment mEnvironment;
             ToUTF8::FromType mEncoding;
             ToUTF8::Utf8Encoder* mEncoder;

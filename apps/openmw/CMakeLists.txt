@@ -99,6 +99,10 @@ add_openmw_dir (mwbase
     inputmanager windowmanager statemanager
     )
 
+add_openmw_dir (mwext
+    pluginmanager pluginapi
+    )
+
 add_openmw_dir (mwmp Main Networking LocalSystem LocalPlayer DedicatedPlayer PlayerList LocalActor DedicatedActor ActorList
     ObjectList Worldstate Cell CellController GUIController MechanicsHelper RecordHelper ScriptController
     )
@@ -164,6 +168,23 @@ else ()
     )
 endif ()
 
+
+
+# Prototype native addon: deliberately a separate DLL/shared library.
+option(BUILD_CLIENT_PLUGIN_TEST "Build the MWExt Mario64 addon-loader test" ON)
+if (BUILD_CLIENT_PLUGIN_TEST AND NOT ANDROID)
+    add_library(mario64_client_test MODULE mwext/mario64_test_plugin.cpp)
+    set_target_properties(mario64_client_test PROPERTIES
+        PREFIX ""
+        OUTPUT_NAME "Mario64"
+    )
+
+    if (WIN32)
+        install(TARGETS mario64_client_test RUNTIME DESTINATION "clientplugins")
+    else ()
+        install(TARGETS mario64_client_test LIBRARY DESTINATION "clientplugins")
+    endif ()
+endif ()
 # Sound stuff - here so CMake doesn't stupidly recompile EVERYTHING
 # when we change the backend.
 include_directories(
