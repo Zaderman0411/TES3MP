@@ -178,12 +178,12 @@ if (BUILD_CLIENT_PLUGIN_TEST AND NOT ANDROID)
         PREFIX ""
         OUTPUT_NAME "Mario64"
     )
-
-    if (WIN32)
-        install(TARGETS mario64_client_test RUNTIME DESTINATION "clientplugins")
-    else ()
-        install(TARGETS mario64_client_test LIBRARY DESTINATION "clientplugins")
-    endif ()
+    # MODULE libraries are LIBRARY artifacts on every platform, including
+    # the .dll produced by this target on Windows.
+    install(TARGETS mario64_client_test
+        LIBRARY DESTINATION "clientplugins"
+        RUNTIME DESTINATION "clientplugins"
+    )
 endif ()
 # Sound stuff - here so CMake doesn't stupidly recompile EVERYTHING
 # when we change the backend.
