@@ -796,7 +796,7 @@ echo
 if [ -z $APPVEYOR ]; then
 	printf "Qt 5.15.0... "
 else
-	printf "Qt 5.13 AppVeyor... "
+	printf "Qt 5.15.2 AppVeyor... "
 fi
 {
 	if [ $BITS -eq 64 ]; then
@@ -873,7 +873,7 @@ fi
 		done
 		echo Done.
 	else
-		QT_SDK="C:/Qt/5.13/msvc2017${SUFFIX}"
+		QT_SDK="C:/Qt/5.15.2/msvc2019_64"
 		add_cmake_opts -DQT_QMAKE_EXECUTABLE="${QT_SDK}/bin/qmake.exe" \
 			-DCMAKE_PREFIX_PATH="$QT_SDK"
 		for CONFIGURATION in ${CONFIGURATIONS[@]}; do
