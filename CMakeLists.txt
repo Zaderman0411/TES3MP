@@ -32,7 +32,7 @@ option(BUILD_DOCS               "Build documentation." OFF )
 option(BUILD_WITH_CODE_COVERAGE "Enable code coverage with gconv" OFF)
 option(BUILD_UNITTESTS          "Enable Unittests with Google C++ Unittest" OFF)
 option(BUILD_BENCHMARKS         "Build benchmarks with Google Benchmark" OFF)
-option(BUILD_OPENMW_MP          "Build OpenMW-MP" ON)
+option(BUILD_OPENMW_MP          "Build OpenMW-MP" OFF)
 option(BUILD_BROWSER            "Build tes3mp Server Browser" ON)
 option(BUILD_MASTER             "Build tes3mp Master Server" OFF)
 
