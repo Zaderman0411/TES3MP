@@ -10,6 +10,7 @@ environment:
     matrix:
         - msvc: 2019
           APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+          RAKNET_ROOT: C:\projects\openmw\deps\RakNet
 
 platform:
 #   - Win32
@@ -47,6 +48,15 @@ install:
     - set PATH=C:\Program Files\Git\mingw64\bin;%PATH%
     - cmd: python -m pip install --disable-pip-version-check aqtinstall
     - cmd: python -m aqt install-qt -O C:\Qt windows desktop 5.15.2 win64_msvc2019_64 --archives qtbase
+    # TES3MP 0.8.1 requires TES3MP/CrabNet rather than upstream RakNet.
+    - cmd: git clone --depth 1 https://github.com/TES3MP/CrabNet.git deps\CrabNet-src
+    - cmd: cmake -S deps\CrabNet-src -B deps\CrabNet-build -G "Visual Studio 16 2019" -A x64 -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DCRABNET_ENABLE_DLL=OFF -DCRABNET_ENABLE_SAMPLES=OFF -DCRABNET_ENABLE_STATIC=ON -DCRABNET_ENABLE_LIBCAT_SECURITY=OFF -DCMAKE_INSTALL_PREFIX=%RAKNET_ROOT%
+    - cmd: cmake --build deps\CrabNet-build --target RakNetLibStatic --config Release --parallel 2
+    - cmd: cmake --install deps\CrabNet-build --config Release
+    - cmd: cmake --build deps\CrabNet-build --target RakNetLibStatic --config Debug --parallel 2
+    - cmd: cmake --install deps\CrabNet-build --config Debug
+    - cmd: dir %RAKNET_ROOT%\lib
+    - cmd: dir %RAKNET_ROOT%\include\raknet
 
 before_build:
     - cmd: git submodule update --init --recursive
