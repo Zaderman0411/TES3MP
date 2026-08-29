@@ -46,6 +46,10 @@ clone_folder: C:\projects\openmw
 
 install:
     - set PATH=C:\Program Files\Git\mingw64\bin;%PATH%
+    - ps: Invoke-WebRequest -Uri 'https://github.com/Kitware/CMake/releases/download/v3.31.12/cmake-3.31.12-windows-x86_64.zip' -OutFile 'C:\cmake-3.31.12.zip'
+    - ps: Expand-Archive -Path 'C:\cmake-3.31.12.zip' -DestinationPath 'C:\cmake-3.31.12'
+    - set PATH=C:\cmake-3.31.12\cmake-3.31.12-windows-x86_64\bin;%PATH%
+    - cmd: cmake --version
     - cmd: python -m pip install --disable-pip-version-check aqtinstall
     - cmd: python -m aqt install-qt -O C:\Qt windows desktop 5.15.2 win64_msvc2019_64 --archives qtbase
     # TES3MP 0.8.1 requires TES3MP/CrabNet rather than upstream RakNet.
