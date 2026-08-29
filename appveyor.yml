@@ -52,6 +52,11 @@ install:
     - cmd: cmake --version
     - cmd: python -m pip install --disable-pip-version-check aqtinstall
     - cmd: python -m aqt install-qt -O C:\Qt windows desktop 5.15.2 win64_msvc2019_64 --archives qtbase
+    # The modified TES3MP prebuild uses the local Boost-install path, so place
+    # the exact historical Boost 1.71 installer where that script expects it.
+    - ps: New-Item -ItemType Directory -Force 'C:\projects\openmw\deps' | Out-Null
+    - ps: Invoke-WebRequest -Uri 'https://gitlab.com/OpenMW/openmw-deps/-/raw/main/windows/boost_1_71_0-msvc-14.2-64.exe' -OutFile 'C:\projects\openmw\deps\boost-1.71.0-msvc14.2-win64.exe'
+    - cmd: dir C:\projects\openmw\deps\boost-1.71.0-msvc14.2-win64.exe
     # TES3MP 0.8.1 requires TES3MP/CrabNet rather than upstream RakNet.
     - cmd: git clone --depth 1 https://github.com/TES3MP/CrabNet.git deps\CrabNet-src
     - cmd: cmake -S deps\CrabNet-src -B deps\CrabNet-build -G "Visual Studio 16 2019" -A x64 -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DCRABNET_ENABLE_DLL=OFF -DCRABNET_ENABLE_SAMPLES=OFF -DCRABNET_ENABLE_STATIC=ON -DCRABNET_ENABLE_LIBCAT_SECURITY=OFF -DCMAKE_INSTALL_PREFIX=%RAKNET_ROOT%
